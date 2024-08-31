@@ -115,7 +115,11 @@ export default function Component() {
     }
     fetchData();
   }, []);
-  
+  if (!services) {
+    console.error("services does not exist");
+  } else {
+    console.log(services + "exists!");
+  }
   const isLoading = !services.length;
 
   

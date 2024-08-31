@@ -15,11 +15,14 @@ interface Guild {
 
 const CACHE_EXPIRY = 60 * 60 * 1000; // 1 hour in milliseconds
 
+
+// Cache Object represent data(type any[]) and timestamp(type number) which both of no current value
 let cache: {
   data?: any[];
   timestamp?: number;
 } = {};
 
+// guild: string, means it takes 1 arg (which is represented as guild in the function), and it can only be of string type. 
 async function getGuildCount(guild: string): Promise<number | undefined> {
   try {
     const apiResult = await axios.get<Guild>(
@@ -344,6 +347,8 @@ async function getApiDataFromSource() {
 export async function getApiData() {
   const now = Date.now();
 
+  // if Cache.timestamp and cache.data and the current time - the cachetimestamp is less than the cache expiry, return the cached data
+  // so if now is 10:00, and the last time we cached data is 9:00, 10 - 9 is 1 and the cache expiry is 1. So they match
   if (cache.timestamp && cache.data && (now - cache.timestamp < CACHE_EXPIRY)) {
     return cache.data;
   }
